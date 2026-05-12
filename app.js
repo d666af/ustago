@@ -1,108 +1,99 @@
 /* ============================================================
-   UstaGo — App Logic
+   Cleanix — App Logic (cleaning-only)
    ============================================================ */
 
-const CATEGORY_TITLES = {
-  electric: 'Электрик',
-  cleaning: 'Клининг',
-};
-
-const SERVICES_BY_CAT = {
-  cleaning: [
-    { id: 'master-clean', name: 'Master Clean', emoji: '🧴', grad: 'linear-gradient(135deg,#FDE8EC 0%,#FFD3DA 100%)',
-      tags: '#генеральнаяуборка #влажнаяуборка', city: 'Ташкент', rating: 4.9, reviews: 127, price: 300000 },
-    { id: 'cleanpro', name: 'CleanPro', emoji: '💧', grad: 'linear-gradient(135deg,#E0F0FF 0%,#B8DFFF 100%)',
-      tags: '#уборкапослеремонта #сантехника', city: 'Ташкент', rating: 4.7, reviews: 86, price: 280000 },
-    { id: 'home-clean', name: 'Home Clean', emoji: '🏠', grad: 'linear-gradient(135deg,#E8F5E9 0%,#C8E6C9 100%)',
-      tags: '#влажнаяуборка #квартиры #офисы', city: 'Ташкент', rating: 4.8, reviews: 92, price: 250000 },
-    { id: 'chisto', name: 'Chisto+', emoji: '✨', grad: 'linear-gradient(135deg,#FFF8E1 0%,#FFE082 100%)',
-      tags: '#генеральнаяуборка #ковры', city: 'Ташкент', rating: 4.6, reviews: 64, price: 320000 },
-    { id: 'eco-clean', name: 'EcoClean', emoji: '🌿', grad: 'linear-gradient(135deg,#E8F5E9 0%,#A5D6A7 100%)',
-      tags: '#эко #безхимии #дети', city: 'Ташкент', rating: 5.0, reviews: 41, price: 350000 },
-    { id: 'fast-clean', name: 'FastClean', emoji: '⚡', grad: 'linear-gradient(135deg,#FFF3E0 0%,#FFCC80 100%)',
-      tags: '#быстро #24часа #экспресс', city: 'Ташкент', rating: 4.5, reviews: 53, price: 230000 },
-  ],
-  electric: [
-    { id: 'voltlab', name: 'VoltLab', emoji: '⚡', grad: 'linear-gradient(135deg,#FFF8E1 0%,#FFD54F 100%)',
-      tags: '#электромонтаж #розетки', city: 'Ташкент', rating: 4.8, reviews: 98, price: 80000 },
-    { id: 'amp-master', name: 'AmpMaster', emoji: '🔌', grad: 'linear-gradient(135deg,#FFFDE7 0%,#FFF176 100%)',
-      tags: '#люстры #проводка #щитки', city: 'Ташкент', rating: 4.7, reviews: 73, price: 120000 },
-    { id: 'elektro', name: 'Elektro Service', emoji: '💡', grad: 'linear-gradient(135deg,#FFF3E0 0%,#FFB74D 100%)',
-      tags: '#освещение #аварийный', city: 'Ташкент', rating: 4.9, reviews: 145, price: 150000 },
-    { id: 'svetuz', name: 'SvetUz', emoji: '🔋', grad: 'linear-gradient(135deg,#FCE4EC 0%,#F48FB1 100%)',
-      tags: '#умныйдом #монтаж', city: 'Ташкент', rating: 4.6, reviews: 58, price: 200000 },
-    { id: 'volta', name: 'Volta', emoji: '🌟', grad: 'linear-gradient(135deg,#E8EAF6 0%,#9FA8DA 100%)',
-      tags: '#диагностика #ремонт', city: 'Ташкент', rating: 4.8, reviews: 67, price: 100000 },
-    { id: 'energy', name: 'Energy Pro', emoji: '🔧', grad: 'linear-gradient(135deg,#F3E5F5 0%,#CE93D8 100%)',
-      tags: '#электрика #безопасность', city: 'Ташкент', rating: 4.7, reviews: 81, price: 130000 },
-  ],
-};
-
-const SERVICE_OFFERS = {
-  cleaning: [
-    { id: 'full-apt', name: 'Полная уборка квартиры', price: 300000, icon: '🏡' },
-    { id: 'post-reno', name: 'Уборка после ремонта', price: 500000, icon: '🧱' },
-    { id: 'windows', name: 'Мытьё окон', price: 200000, icon: '🪟' },
-    { id: 'carpets', name: 'Стирка ковров', price: 150000, icon: '🧶' },
-    { id: 'office', name: 'Уборка офиса', price: 400000, icon: '🏢' },
-  ],
-  electric: [
-    { id: 'outlet', name: 'Установка розеток', price: 80000, icon: '🔌' },
-    { id: 'chandelier', name: 'Монтаж люстры', price: 150000, icon: '💡' },
-    { id: 'wiring', name: 'Прокладка проводки', price: 400000, icon: '⚡' },
-    { id: 'panel', name: 'Сборка щитка', price: 350000, icon: '🔋' },
-    { id: 'diag', name: 'Диагностика сети', price: 100000, icon: '🔧' },
-  ],
-};
-
-const REVIEWS_BY_SERVICE = {
-  default: [
-    { name: 'Алишер', initial: 'А', date: '3 дня назад', rating: 5,
-      text: 'Отличная работа! Команда приехала вовремя, всё сделали аккуратно и быстро. Очень доволен результатом, обязательно закажу ещё.' },
-    { name: 'Дилнора', initial: 'Д', date: 'на прошлой неделе', rating: 5,
-      text: 'Мастера профессионалы своего дела. Использовали современное оборудование и эко-средства. Рекомендую!' },
-    { name: 'Бекзод', initial: 'Б', date: '2 недели назад', rating: 4,
-      text: 'Хороший сервис, всё чисто. Немного задержались, но извинились и компенсировали. В целом — отлично.' },
-    { name: 'Малика', initial: 'М', date: 'месяц назад', rating: 5,
-      text: 'Заказывала генеральную уборку — результат превзошёл ожидания. Цена адекватная, качество на высоте.' },
-  ],
-};
-
-const FEATURED = [
-  { id: 'master-clean', cat: 'cleaning' },
-  { id: 'voltlab', cat: 'electric' },
-  { id: 'eco-clean', cat: 'cleaning' },
-  { id: 'elektro', cat: 'electric' },
+const SUB_CATEGORIES = [
+  { id: 'apartment',  name: 'Уборка квартиры',     icon: '🏡', ico_class: 'sub-card__ico--indigo', priceFrom: 300000 },
+  { id: 'general',    name: 'Генеральная',          icon: '✨', ico_class: 'sub-card__ico--orange', priceFrom: 450000 },
+  { id: 'post-reno',  name: 'После ремонта',        icon: '🧱', ico_class: 'sub-card__ico--mix',    priceFrom: 500000 },
+  { id: 'office',     name: 'Уборка офиса',         icon: '🏢', ico_class: 'sub-card__ico--navy',   priceFrom: 400000 },
+  { id: 'windows',    name: 'Мытьё окон',           icon: '🪟', ico_class: 'sub-card__ico--indigo', priceFrom: 200000 },
+  { id: 'carpets',    name: 'Стирка ковров',        icon: '🧶', ico_class: 'sub-card__ico--orange', priceFrom: 150000 },
+  { id: 'sofa',       name: 'Химчистка мебели',     icon: '🛋️', ico_class: 'sub-card__ico--mix',    priceFrom: 280000 },
+  { id: 'eco',        name: 'Эко-уборка',           icon: '🌿', ico_class: 'sub-card__ico--navy',   priceFrom: 350000 },
 ];
+
+const SERVICES = [
+  { id: 'master-clean', name: 'Master Clean', emoji: '🧴', grad: 'linear-gradient(135deg,#EEF1FE 0%,#C9D2FF 100%)',
+    tags: '#генеральная #окна #ковры', city: 'Ташкент', rating: 4.9, reviews: 127, priceFrom: 300000, badge: 'Топ' },
+  { id: 'cleanpro', name: 'CleanPro', emoji: '💧', grad: 'linear-gradient(135deg,#FFE9DC 0%,#FFC299 100%)',
+    tags: '#послеремонта #офис #эко', city: 'Ташкент', rating: 4.7, reviews: 86, priceFrom: 280000 },
+  { id: 'home-clean', name: 'Home Clean', emoji: '🏠', grad: 'linear-gradient(135deg,#E1F5E9 0%,#A5DCC1 100%)',
+    tags: '#квартиры #офисы #влажная', city: 'Ташкент', rating: 4.8, reviews: 92, priceFrom: 250000 },
+  { id: 'chisto', name: 'Chisto+', emoji: '✨', grad: 'linear-gradient(135deg,#FFF6E1 0%,#FFE082 100%)',
+    tags: '#генеральная #ковры #окна', city: 'Ташкент', rating: 4.6, reviews: 64, priceFrom: 320000 },
+  { id: 'eco-clean', name: 'EcoClean', emoji: '🌿', grad: 'linear-gradient(135deg,#E8F5E9 0%,#A5D6A7 100%)',
+    tags: '#эко #без_химии #дети #животные', city: 'Ташкент', rating: 5.0, reviews: 41, priceFrom: 350000, badge: 'Эко' },
+  { id: 'fast-clean', name: 'FastClean', emoji: '⚡', grad: 'linear-gradient(135deg,#FCE5E8 0%,#FFA8B2 100%)',
+    tags: '#быстро #24часа #экспресс', city: 'Ташкент', rating: 4.5, reviews: 53, priceFrom: 230000 },
+  { id: 'brillo', name: 'Brillo', emoji: '💎', grad: 'linear-gradient(135deg,#EDE7F6 0%,#B39DDB 100%)',
+    tags: '#премиум #вилл #коттеджи', city: 'Ташкент', rating: 4.9, reviews: 38, priceFrom: 600000, badge: 'VIP' },
+  { id: 'shine', name: 'Shine Co', emoji: '🌟', grad: 'linear-gradient(135deg,#E0F7FA 0%,#80DEEA 100%)',
+    tags: '#влажная #окна #ванная', city: 'Ташкент', rating: 4.7, reviews: 72, priceFrom: 240000 },
+];
+
+const OFFERS = [
+  { id: 'full-apt',    name: 'Полная уборка квартиры', price: 300000, icon: '🏡' },
+  { id: 'general',     name: 'Генеральная уборка',     price: 450000, icon: '✨' },
+  { id: 'post-reno',   name: 'Уборка после ремонта',   price: 500000, icon: '🧱' },
+  { id: 'windows',     name: 'Мытьё окон',             price: 200000, icon: '🪟' },
+  { id: 'carpets',     name: 'Стирка ковров',          price: 150000, icon: '🧶' },
+  { id: 'sofa',        name: 'Химчистка мебели',       price: 280000, icon: '🛋️' },
+  { id: 'office',      name: 'Уборка офиса',           price: 400000, icon: '🏢' },
+  { id: 'eco-extra',   name: 'Эко-средства (+)',       price:  50000, icon: '🌿' },
+];
+
+const REVIEWS = [
+  { name: 'Алишер', initial: 'А', date: '3 дня назад', rating: 5,
+    text: 'Отличная работа! Команда приехала вовремя, всё сделали аккуратно и быстро. Очень доволен результатом.' },
+  { name: 'Дилнора', initial: 'Д', date: 'на прошлой неделе', rating: 5,
+    text: 'Мастера — профессионалы своего дела. Использовали современное оборудование и эко-средства. Рекомендую!' },
+  { name: 'Бекзод', initial: 'Б', date: '2 недели назад', rating: 4,
+    text: 'Хороший сервис, всё чисто. Немного задержались, но извинились и компенсировали. В целом — отлично.' },
+  { name: 'Малика', initial: 'М', date: 'месяц назад', rating: 5,
+    text: 'Заказывала генеральную уборку — результат превзошёл ожидания. Цена адекватная, качество на высоте.' },
+];
+
+const FEATURED_IDS = ['master-clean', 'eco-clean', 'brillo', 'chisto'];
 
 const MOCK_ORDERS = {
   active: [
     { id: 'o1', service: 'Master Clean', sub: 'Полная уборка · Пн 09:00', price: 300000, status: 'В пути', emoji: '🧴' },
   ],
   done: [
-    { id: 'o2', service: 'VoltLab', sub: 'Установка розеток · 12 апр', price: 240000, status: 'Завершён', emoji: '⚡' },
-    { id: 'o3', service: 'Home Clean', sub: 'Уборка квартиры · 5 апр', price: 250000, status: 'Завершён', emoji: '🏠' },
-    { id: 'o4', service: 'Elektro Service', sub: 'Монтаж люстры · 1 апр', price: 150000, status: 'Завершён', emoji: '💡' },
+    { id: 'o2', service: 'Home Clean',  sub: 'Уборка квартиры · 5 апр', price: 250000, status: 'Завершён', emoji: '🏠' },
+    { id: 'o3', service: 'EcoClean',    sub: 'Эко-уборка · 1 апр',       price: 350000, status: 'Завершён', emoji: '🌿' },
+    { id: 'o4', service: 'CleanPro',    sub: 'После ремонта · 28 мар',   price: 500000, status: 'Завершён', emoji: '💧' },
   ],
 };
 
-const DAYS = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
-const HOURS = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00'];
+const REG_SERVICES = [
+  { id: 'apartment',  name: 'Уборка квартир', icon: '🏡' },
+  { id: 'general',    name: 'Генеральная',    icon: '✨' },
+  { id: 'office',     name: 'Уборка офисов',  icon: '🏢' },
+  { id: 'post-reno',  name: 'После ремонта',  icon: '🧱' },
+  { id: 'windows',    name: 'Мытьё окон',     icon: '🪟' },
+  { id: 'carpets',    name: 'Стирка ковров',  icon: '🧶' },
+];
+
+const RU_WEEKDAYS = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+const HOURS = ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
 
 /* ---------- State ---------- */
 const state = {
-  currentCat: 'cleaning',
   currentService: null,
   selectedOffers: new Set(),
-  selectedSlot: { day: 'Пн', hour: '09:00' },
-  favorites: new Set(JSON.parse(localStorage.getItem('ustago.favs') || '[]')),
-  regCats: new Set(),
+  selectedDate: null,
+  selectedHour: '10:00',
+  favorites: new Set(JSON.parse(localStorage.getItem('cleanix.favs') || '[]')),
+  regServices: new Set(),
   regStep: 1,
   payMethod: 'click',
   promoApplied: false,
   promoDiscount: 0,
-  theme: localStorage.getItem('ustago.theme') || 'light',
+  theme: localStorage.getItem('cleanix.theme') || 'light',
   ordersTab: 'active',
+  activeSubCategory: null,
 };
 
 const SERVICE_FEE = 15000;
@@ -119,69 +110,83 @@ function showToast(msg, ms = 2200) {
   showToast._t = setTimeout(() => t.classList.remove('show'), ms);
 }
 
-function go(screen, params = {}) {
+function go(screen) {
   $$('.screen').forEach(s => s.classList.remove('active'));
   const target = $(`[data-screen="${screen}"]`);
   if (!target) return;
   target.classList.add('active');
   window.scrollTo({ top: 0, behavior: 'instant' });
-
-  // Update bottom nav highlight
   $$('.nav-tab').forEach(t => t.classList.toggle('is-active', t.dataset.go === screen));
 
-  // Per-screen prep
-  if (screen === 'services') renderServicesGrid();
+  if (screen === 'services')  renderServicesGrid();
   if (screen === 'favorites') renderFavorites();
-  if (screen === 'orders') renderOrders();
-  if (screen === 'profile') updateProfile();
-  if (screen === 'home') renderFeatured();
-  if (screen === 'register') resetRegStep();
+  if (screen === 'orders')    renderOrders();
+  if (screen === 'profile')   updateProfile();
+  if (screen === 'home')      renderHome();
+  if (screen === 'register')  resetRegStep();
 }
 
 function formatPrice(n) { return n.toLocaleString('ru-RU'); }
-function persistFavs() { localStorage.setItem('ustago.favs', JSON.stringify([...state.favorites])); }
-
-function findService(id) {
-  for (const cat of Object.values(SERVICES_BY_CAT)) {
-    const found = cat.find(s => s.id === id);
-    if (found) return found;
-  }
-  return null;
-}
+function persistFavs() { localStorage.setItem('cleanix.favs', JSON.stringify([...state.favorites])); }
+function findService(id) { return SERVICES.find(s => s.id === id) || null; }
 
 /* ---------- Home ---------- */
+function renderHome() {
+  renderSubGrid();
+  renderFeatured();
+}
+
+function renderSubGrid() {
+  const wrap = $('#sub-grid');
+  wrap.innerHTML = SUB_CATEGORIES.slice(0, 6).map(c => `
+    <button class="sub-card" data-sub="${c.id}">
+      <div class="sub-card__ico ${c.ico_class}">${c.icon}</div>
+      <div class="sub-card__name">${c.name}</div>
+      <div class="sub-card__price">от ${formatPrice(c.priceFrom)} сум</div>
+    </button>
+  `).join('');
+  $$('[data-sub]', wrap).forEach(b => {
+    b.addEventListener('click', () => {
+      state.activeSubCategory = b.dataset.sub;
+      go('services');
+    });
+  });
+}
+
 function renderFeatured() {
   const rail = $('#featured-rail');
-  rail.innerHTML = FEATURED.map(f => {
-    const s = SERVICES_BY_CAT[f.cat].find(x => x.id === f.id);
+  rail.innerHTML = FEATURED_IDS.map(id => {
+    const s = findService(id);
     if (!s) return '';
     return `
-      <article class="feat-card" data-id="${s.id}" data-cat="${f.cat}">
-        <div class="feat-img" style="background:${s.grad}">${s.emoji}</div>
+      <article class="feat-card" data-id="${s.id}">
+        <div class="feat-img" style="background:${s.grad}">${s.emoji}
+          ${s.badge ? `<span class="feat-badge">${s.badge}</span>` : ''}
+        </div>
         <div class="feat-body">
           <div class="feat-name">${s.name}</div>
           <div class="feat-meta">
             <span class="feat-rating"><svg class="icon icon-xs star"><use href="#i-star"/></svg> ${s.rating}</span>
             <span>·</span>
-            <span>от ${formatPrice(s.price)} сум</span>
+            <span>от ${formatPrice(s.priceFrom)} сум</span>
           </div>
         </div>
       </article>`;
   }).join('');
-  $$('.feat-card', rail).forEach(c => {
-    c.addEventListener('click', () => {
-      state.currentCat = c.dataset.cat;
-      openDetail(c.dataset.id);
-    });
-  });
+  $$('.feat-card', rail).forEach(c => c.addEventListener('click', () => openDetail(c.dataset.id)));
 }
 
 /* ---------- Services list ---------- */
 function renderServicesGrid() {
   const grid = $('#services-grid');
-  const cat = state.currentCat;
-  const list = SERVICES_BY_CAT[cat] || [];
-  $('#services-title').textContent = CATEGORY_TITLES[cat] || 'Сервисы';
+  const sub = state.activeSubCategory;
+  let list = SERVICES;
+  if (sub) {
+    const subDef = SUB_CATEGORIES.find(c => c.id === sub);
+    $('#services-title').textContent = subDef ? subDef.name : 'Клининг сервисы';
+  } else {
+    $('#services-title').textContent = 'Клининг сервисы';
+  }
   grid.innerHTML = list.map(s => svcCardHTML(s)).join('');
   bindSvcCards(grid);
 }
@@ -203,7 +208,7 @@ function svcCardHTML(s) {
       </div>
       <div class="svc-card__foot">
         <span class="svc-card__city"><svg class="icon icon-xs"><use href="#i-pin"/></svg> ${s.city}</span>
-        <span class="svc-card__price">от ${formatPrice(s.price)} с</span>
+        <span class="svc-card__price">от ${formatPrice(s.priceFrom)} с</span>
       </div>
     </article>`;
 }
@@ -212,22 +217,13 @@ function bindSvcCards(scope) {
   $$('.svc-card', scope).forEach(card => {
     card.addEventListener('click', (e) => {
       if (e.target.closest('[data-fav]')) return;
-      const id = card.dataset.id;
-      const svc = findService(id);
-      if (svc) {
-        for (const [cat, list] of Object.entries(SERVICES_BY_CAT)) {
-          if (list.find(s => s.id === id)) { state.currentCat = cat; break; }
-        }
-        openDetail(id);
-      }
+      openDetail(card.dataset.id);
     });
   });
   $$('[data-fav]', scope).forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
-      const id = btn.dataset.fav;
-      toggleFav(id);
-      // Re-render whichever grid we're in
+      toggleFav(btn.dataset.fav);
       const grid = btn.closest('.services-grid');
       if (grid && grid.id === 'services-grid') renderServicesGrid();
       if (grid && grid.id === 'favs-grid') renderFavorites();
@@ -247,7 +243,6 @@ function bindFilters() {
     c.addEventListener('click', () => {
       $$('#filter-chips .chip').forEach(x => x.classList.remove('is-active'));
       c.classList.add('is-active');
-      // Visual only — no real filtering for demo
       showToast(`Фильтр: ${c.textContent.trim()}`);
     });
   });
@@ -261,7 +256,7 @@ function openDetail(serviceId) {
   state.selectedOffers = new Set();
 
   $('#detail-name').textContent = svc.name;
-  $('#detail-desc').textContent = `Профессиональный ${state.currentCat === 'cleaning' ? 'клининг' : 'электро'} сервис с опытом 5+ лет. Качественные работы с гарантией.`;
+  $('#detail-desc').textContent = `Профессиональный клининг сервис с опытом 5+ лет. Качественная уборка квартир, домов и офисов. Гарантия чистоты и скорости!`;
 
   const hero = $('#detail-hero');
   hero.style.background = svc.grad;
@@ -275,11 +270,11 @@ function openDetail(serviceId) {
   };
 
   renderServiceOffers();
-  renderTimeTable();
+  renderDateRail();
+  renderHourGrid();
   renderReviews();
   updateCtaTotal();
 
-  // Reset to first tab
   $$('.tab').forEach(t => t.classList.toggle('is-active', t.dataset.tab === 'services'));
   $$('.tab-pane').forEach(p => p.classList.toggle('is-active', p.dataset.pane === 'services'));
 
@@ -287,9 +282,8 @@ function openDetail(serviceId) {
 }
 
 function renderServiceOffers() {
-  const offers = SERVICE_OFFERS[state.currentCat] || [];
   const wrap = $('#service-list');
-  wrap.innerHTML = offers.map(o => `
+  wrap.innerHTML = OFFERS.map(o => `
     <button class="svc ${state.selectedOffers.has(o.id) ? 'is-selected' : ''}" data-offer="${o.id}">
       <div class="svc__ico">${o.icon}</div>
       <div class="svc__body">
@@ -310,28 +304,49 @@ function renderServiceOffers() {
   });
 }
 
-function renderTimeTable() {
-  const wrap = $('#time-table');
-  wrap.innerHTML = DAYS.slice(0, 4).map(d => `
-    <div class="time-row">
-      <span class="time-day">${d}</span>
-      ${HOURS.map(h => `
-        <button class="time-slot ${state.selectedSlot.day === d && state.selectedSlot.hour === h ? 'is-selected' : ''}" data-day="${d}" data-hour="${h}">${h}</button>
-      `).join('')}
-    </div>
+function renderDateRail() {
+  const wrap = $('#date-rail');
+  const today = new Date();
+  const days = [];
+  for (let i = 0; i < 14; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() + i);
+    days.push(d);
+  }
+  if (!state.selectedDate) state.selectedDate = days[0].toDateString();
+  wrap.innerHTML = days.map(d => {
+    const key = d.toDateString();
+    const sel = state.selectedDate === key;
+    return `
+      <button class="date-pill ${sel ? 'is-selected' : ''}" data-date="${key}">
+        <span class="d-day">${RU_WEEKDAYS[d.getDay()]}</span>
+        <span class="d-num">${d.getDate()}</span>
+      </button>`;
+  }).join('');
+  $$('[data-date]', wrap).forEach(b => {
+    b.addEventListener('click', () => {
+      state.selectedDate = b.dataset.date;
+      renderDateRail();
+    });
+  });
+}
+
+function renderHourGrid() {
+  const wrap = $('#hour-grid');
+  wrap.innerHTML = HOURS.map(h => `
+    <button class="hour-slot ${state.selectedHour === h ? 'is-selected' : ''}" data-hour="${h}">${h}</button>
   `).join('');
-  $$('.time-slot', wrap).forEach(btn => {
-    btn.addEventListener('click', () => {
-      state.selectedSlot = { day: btn.dataset.day, hour: btn.dataset.hour };
-      renderTimeTable();
+  $$('[data-hour]', wrap).forEach(b => {
+    b.addEventListener('click', () => {
+      state.selectedHour = b.dataset.hour;
+      renderHourGrid();
     });
   });
 }
 
 function renderReviews() {
   const wrap = $('#reviews-list');
-  const reviews = REVIEWS_BY_SERVICE.default;
-  wrap.innerHTML = reviews.map(r => `
+  wrap.innerHTML = REVIEWS.map(r => `
     <article class="review">
       <div class="review-head">
         <div class="review-avatar">${r.initial}</div>
@@ -359,8 +374,7 @@ function bindTabs() {
 }
 
 function selectedOffersTotal() {
-  const offers = (SERVICE_OFFERS[state.currentCat] || []).filter(o => state.selectedOffers.has(o.id));
-  return offers.reduce((s, o) => s + o.price, 0);
+  return OFFERS.filter(o => state.selectedOffers.has(o.id)).reduce((s, o) => s + o.price, 0);
 }
 
 function updateCtaTotal() {
@@ -368,13 +382,19 @@ function updateCtaTotal() {
 }
 
 /* ---------- Order ---------- */
+function formatDateShort(key) {
+  if (!key) return '';
+  const d = new Date(key);
+  return `${RU_WEEKDAYS[d.getDay()]} ${d.getDate()}`;
+}
+
 function buildOrder() {
-  const offers = (SERVICE_OFFERS[state.currentCat] || []).filter(o => state.selectedOffers.has(o.id));
+  const offers = OFFERS.filter(o => state.selectedOffers.has(o.id));
   const sum = offers.reduce((s, o) => s + o.price, 0);
   const discount = state.promoApplied ? state.promoDiscount : 0;
   const total = sum + SERVICE_FEE - discount;
   $('#order-items').innerHTML = offers.map(o => `<li>${o.name} — ${formatPrice(o.price)} сум</li>`).join('') || '<li>Услуги не выбраны</li>';
-  $('#order-time').textContent = `${state.selectedSlot.day} ${state.selectedSlot.hour}`;
+  $('#order-time').textContent = `${formatDateShort(state.selectedDate)} · ${state.selectedHour}`;
   $('#bd-services').textContent = `${formatPrice(sum)} сум`;
   $('#bd-fee').textContent = `${formatPrice(SERVICE_FEE)} сум`;
   $('#bd-discount-row').hidden = !state.promoApplied;
@@ -394,9 +414,8 @@ function bindPayment() {
     const code = $('#promo').value.trim().toUpperCase();
     if (!code) return showToast('Введите промокод');
     if (code === 'FIRST20') {
-      const sum = selectedOffersTotal();
       state.promoApplied = true;
-      state.promoDiscount = Math.round(sum * 0.2);
+      state.promoDiscount = Math.round(selectedOffersTotal() * 0.2);
       buildOrder();
       showToast('Промокод применён: −20%');
     } else {
@@ -426,7 +445,6 @@ function renderFavorites() {
     return s ? svcCardHTML(s) : '';
   }).join('');
   bindSvcCards(grid);
-  $('#profile-fav-count').textContent = ids.length;
 }
 
 /* ---------- Orders ---------- */
@@ -468,7 +486,7 @@ function bindOrdersTabs() {
   });
 }
 
-/* ---------- Profile / theme ---------- */
+/* ---------- Profile ---------- */
 function updateProfile() {
   $('#profile-fav-count').textContent = state.favorites.size;
   syncThemeLabel();
@@ -487,11 +505,29 @@ function syncThemeLabel() {
 }
 function toggleTheme() {
   state.theme = state.theme === 'dark' ? 'light' : 'dark';
-  localStorage.setItem('ustago.theme', state.theme);
+  localStorage.setItem('cleanix.theme', state.theme);
   applyTheme();
 }
 
-/* ---------- Register multi-step ---------- */
+/* ---------- Register ---------- */
+function renderRegServices() {
+  const wrap = $('#reg-services');
+  wrap.innerHTML = REG_SERVICES.map(s => `
+    <button class="reg-svc ${state.regServices.has(s.id) ? 'is-selected' : ''}" data-rs="${s.id}">
+      <span class="reg-emoji">${s.icon}</span>
+      <span>${s.name}</span>
+    </button>
+  `).join('');
+  $$('[data-rs]', wrap).forEach(b => {
+    b.addEventListener('click', () => {
+      const id = b.dataset.rs;
+      if (state.regServices.has(id)) state.regServices.delete(id);
+      else state.regServices.add(id);
+      renderRegServices();
+    });
+  });
+}
+
 function resetRegStep() {
   state.regStep = 1;
   updateRegStep();
@@ -502,7 +538,7 @@ function updateRegStep() {
   $('#reg-step-pill').textContent = `${state.regStep}/2`;
 }
 
-/* ---------- Time / status bar ---------- */
+/* ---------- Time ---------- */
 function updateTime() {
   const t = new Date();
   const hh = String(t.getHours()).padStart(2, '0');
@@ -512,19 +548,12 @@ function updateTime() {
 
 /* ---------- Wire-up ---------- */
 function bind() {
-  // Navigation
   $$('[data-go]').forEach(el => {
-    el.addEventListener('click', (e) => {
+    el.addEventListener('click', () => {
       const target = el.dataset.go;
-      if (target === 'services') {
-        const cat = el.dataset.cat;
-        if (cat) state.currentCat = cat;
-      }
+      if (target === 'services') state.activeSubCategory = null;
       if (target === 'order') {
-        if (state.selectedOffers.size === 0) {
-          showToast('Выберите хотя бы одну услугу');
-          return;
-        }
+        if (state.selectedOffers.size === 0) return showToast('Выберите хотя бы одну услугу');
         buildOrder();
       }
       go(target);
@@ -536,12 +565,11 @@ function bind() {
   bindPayment();
   bindOrdersTabs();
 
-  // Pay button
   $('#pay-btn').addEventListener('click', () => {
     const phone = $('#phone').value.trim();
     const address = $('#address').value.trim();
     if (!phone || !address) return showToast('Заполните номер и адрес');
-    showToast('Заявка отправлена! Спасибо 🎉', 2600);
+    showToast('Заявка отправлена! Спасибо ✨', 2600);
     setTimeout(() => {
       state.selectedOffers = new Set();
       state.promoApplied = false;
@@ -550,17 +578,8 @@ function bind() {
     }, 1400);
   });
 
-  // Register
-  $$('.reg-cat').forEach(b => {
-    b.addEventListener('click', () => {
-      const c = b.dataset.cat;
-      if (state.regCats.has(c)) state.regCats.delete(c);
-      else state.regCats.add(c);
-      b.classList.toggle('is-selected', state.regCats.has(c));
-    });
-  });
   $('#reg-next').addEventListener('click', () => {
-    if (state.regCats.size === 0) return showToast('Выберите хотя бы одну категорию');
+    if (state.regServices.size === 0) return showToast('Выберите хотя бы одну услугу');
     state.regStep = 2;
     updateRegStep();
   });
@@ -569,27 +588,23 @@ function bind() {
     updateRegStep();
   });
   $('#submit-reg').addEventListener('click', () => {
-    if (!$('#reg-name').value.trim()) return showToast('Введите имя');
+    if (!$('#reg-name').value.trim())  return showToast('Введите имя');
     if (!$('#reg-phone').value.trim()) return showToast('Введите телефон');
-    if (!$('#reg-city').value) return showToast('Выберите город');
-    if (!$('#reg-tos').checked) return showToast('Согласитесь с условиями');
+    if (!$('#reg-city').value)         return showToast('Выберите город');
+    if (!$('#reg-tos').checked)        return showToast('Согласитесь с условиями');
     showToast('Заявка отправлена! Свяжемся скоро 🎉', 2600);
     $('#reg-name').value = '';
     $('#reg-phone').value = '';
     $('#reg-city').value = '';
     $('#reg-exp').value = '';
-    state.regCats = new Set();
-    $$('.reg-cat').forEach(b => b.classList.remove('is-selected'));
+    state.regServices = new Set();
+    renderRegServices();
     setTimeout(() => go('home'), 1400);
   });
 
-  // Theme toggle
   $('#theme-toggle').addEventListener('click', toggleTheme);
-
-  // Quick: support
   $$('[data-action="support"]').forEach(b => b.addEventListener('click', () => showToast('Скоро откроется чат поддержки')));
 
-  // Time tick
   updateTime();
   setInterval(updateTime, 30 * 1000);
 }
@@ -597,10 +612,12 @@ function bind() {
 document.addEventListener('DOMContentLoaded', () => {
   applyTheme();
   bind();
-  renderFeatured();
+  renderHome();
   renderServicesGrid();
   renderServiceOffers();
-  renderTimeTable();
+  renderDateRail();
+  renderHourGrid();
   renderReviews();
+  renderRegServices();
   updateProfile();
 });
