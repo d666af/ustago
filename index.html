@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#E63946" />
   <title>UstaGo — Сервис мастеров</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -11,247 +11,381 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="app" id="app">
 
-    <!-- ============= HOME SCREEN ============= -->
-    <section class="screen screen--home active" data-screen="home">
-      <header class="top-bar">
-        <div class="search-pill">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-          <input type="text" placeholder="Найти мастера..." aria-label="Поиск мастера" />
-        </div>
-        <button class="exit-btn" type="button">Выход</button>
-      </header>
+<!-- ============= ICON SPRITE (referenced as <use href="#i-x"/>) ============= -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7zM9 8V6a3 3 0 0 1 6 0v2"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16V10a6 6 0 0 1 12 0v6l2 2H4zM10 21a2 2 0 0 0 4 0"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 3.1 6.4 7 1-5 4.9 1.2 7L12 17.8 5.7 21.3 7 14.3 2 9.4l7-1z"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 22s7-7.6 7-13a7 7 0 0 0-14 0c0 5.4 7 13 7 13z"/><circle cx="12" cy="9" r="2.5"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4 2h3a2 2 0 0 1 2 1.7c.1 1 .3 2 .6 3a2 2 0 0 1-.5 2L7.8 10a16 16 0 0 0 6.2 6.2l1.3-1.3a2 2 0 0 1 2-.5c1 .3 2 .5 3 .6a2 2 0 0 1 1.7 2z"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 5h18M6 12h12M10 19h4"/></symbol>
+    <symbol id="i-tune" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 12h2M10 12h10M4 17h12M20 17h0M14 5v4M8 10v4M16 15v4"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><circle cx="6" cy="12" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="m8.6 10.5 6.8-3.9M8.6 13.5l6.8 3.9"/></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></symbol>
+    <symbol id="i-cash" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.4 1.4M17.6 17.6 19 19M5 19l1.4-1.4M17.6 6.4 19 5"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M10 17 5 12l5-5M5 12h14M19 19V5"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.5 8.5 8 9 4.5-.5 8-4 8-9V6z"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 4M12 17v.1"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="m13 2-9 13h7l-1 7 9-13h-7z"/></symbol>
+    <symbol id="i-spray" viewBox="0 0 24 24"><path d="M9 8V4h6v4M10 8h4v3a2 2 0 0 1-2 2 2 2 0 0 1-2-2zM6 5h1M3 7h1M5 3v1"/><rect x="8" y="13" width="8" height="8" rx="2"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 1 1 3 3L7 19l-4 1 1-4z"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4"/><path d="M12 8v13M5 12v9h14v-9M7.5 8a2.5 2.5 0 1 1 0-5C10 3 12 8 12 8s2-5 4.5-5a2.5 2.5 0 1 1 0 5"/></symbol>
+  </defs>
+</svg>
 
-      <div class="brand-block">
-        <div class="brand-logo">
-          <svg viewBox="0 0 64 64" class="brand-icon" aria-hidden="true">
-            <defs>
-              <linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#FF4D5E"/>
-                <stop offset="1" stop-color="#C81E2D"/>
-              </linearGradient>
-            </defs>
-            <path d="M32 6 4 28v30h56V28L32 6z" fill="url(#lg1)"/>
-            <path d="M22 36l8-8 4 4-8 8z" fill="#fff" opacity=".95"/>
-            <path d="M34 32l8-8 4 4-8 8z" fill="#fff" opacity=".95"/>
-            <circle cx="20" cy="38" r="2" fill="#fff"/>
-            <circle cx="44" cy="30" r="2" fill="#fff"/>
-          </svg>
-          <span class="brand-name">Usta<span class="accent">Go</span></span>
-        </div>
-        <div class="welcome-card">
-          <h2>Добро пожаловать в UstaGo!</h2>
-          <p>Выбирайте мастеров и заказывайте услуги через Telegram</p>
-        </div>
-      </div>
+<div class="app" id="app">
 
-      <div class="cat-grid">
-        <button class="cat-card" data-go="services" data-cat="plumber">
-          <div class="cat-icon-wrap"><span class="cat-emoji">🔧</span></div>
-          <span class="cat-label">Сантехник</span>
-        </button>
-        <button class="cat-card" data-go="services" data-cat="electric">
-          <div class="cat-icon-wrap"><span class="cat-emoji">⚡</span></div>
-          <span class="cat-label">Электрик</span>
-        </button>
-        <button class="cat-card" data-go="services" data-cat="carpenter">
-          <div class="cat-icon-wrap"><span class="cat-emoji">🔨</span></div>
-          <span class="cat-label">Плотник</span>
-        </button>
-        <button class="cat-card" data-go="services" data-cat="cleaning">
-          <div class="cat-icon-wrap"><span class="cat-emoji">🧽</span></div>
-          <span class="cat-label">Клининг</span>
-        </button>
-      </div>
+  <!-- ============= STATUS BAR (decorative) ============= -->
+  <div class="status-bar" aria-hidden="true">
+    <span class="sb-time" id="sb-time">14:40</span>
+    <span class="sb-right">
+      <svg viewBox="0 0 18 12"><path d="M1 11h1M4 9h1M7 7h1M10 5h1M13 3h1M16 1h1" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+      <svg viewBox="0 0 20 14"><path d="M2 4a8 8 0 0 1 16 0M5 7a5 5 0 0 1 10 0M8 10a2 2 0 0 1 4 0" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+      <svg viewBox="0 0 26 12"><rect x="1" y="1" width="22" height="10" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><rect x="3" y="3" width="18" height="6" rx="1" fill="currentColor"/><path d="M24 4v4" stroke="currentColor" stroke-width="2"/></svg>
+    </span>
+  </div>
 
-      <button class="support-row" type="button">
-        <span class="support-left">
-          <span class="support-icon">🎧</span>
-          <span>Служба поддержки</span>
-        </span>
-        <span class="chev">›</span>
+  <!-- ============= HOME ============= -->
+  <section class="screen screen--home active" data-screen="home">
+    <header class="top-bar top-bar--home">
+      <button class="avatar-btn" data-go="profile" aria-label="Профиль">
+        <span class="avatar-letter">А</span>
       </button>
-
-      <div class="bottom-cta">
-        <button class="btn btn--primary" data-go="register">
-          Предложить мастера <span class="chev-w">›</span>
-        </button>
+      <div class="greeting">
+        <div class="greet-hello">Привет, Анвар 👋</div>
+        <div class="greet-loc"><svg class="icon icon-xs"><use href="#i-pin"/></svg> Ташкент</div>
       </div>
-    </section>
+      <button class="icon-btn icon-btn--ghost notif-btn" aria-label="Уведомления">
+        <svg class="icon"><use href="#i-bell"/></svg>
+        <span class="notif-dot"></span>
+      </button>
+    </header>
 
-    <!-- ============= SERVICES LIST ============= -->
-    <section class="screen screen--services" data-screen="services">
-      <header class="top-bar top-bar--dark">
-        <button class="icon-btn back-btn" data-go="home" aria-label="Назад">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m15 18-6-6 6-6"/></svg>
-        </button>
-        <div class="search-pill search-pill--flat">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-          <input type="text" placeholder="Поиск..." aria-label="Поиск" />
-        </div>
-        <div class="header-logo">
-          <svg viewBox="0 0 32 32" aria-hidden="true">
-            <path d="M16 3 3 14v15h26V14L16 3z" fill="#fff"/>
-            <path d="M11 18l4-4 2 2-4 4z" fill="#E63946"/>
-            <path d="M17 16l4-4 2 2-4 4z" fill="#E63946"/>
-          </svg>
-        </div>
-      </header>
+    <div class="search-wrap">
+      <label class="search-pill search-pill--lg">
+        <svg class="icon icon-sm"><use href="#i-search"/></svg>
+        <input type="text" placeholder="Найти мастера или услугу..." aria-label="Поиск" />
+      </label>
+      <button class="filter-btn" aria-label="Фильтры"><svg class="icon"><use href="#i-tune"/></svg></button>
+    </div>
 
-      <h1 class="page-title" id="services-title">Клининг сервисы</h1>
-
-      <div class="services-grid" id="services-grid">
-        <!-- cards injected by JS -->
+    <!-- Promo banner -->
+    <div class="promo">
+      <div class="promo-text">
+        <span class="promo-badge">Акция</span>
+        <h3>−20% на первый заказ</h3>
+        <p>Промокод <strong>FIRST20</strong></p>
       </div>
-
-      <div class="bottom-cta">
-        <button class="btn btn--primary" data-go="register">
-          Предложить мастера <span class="chev-w">›</span>
-        </button>
+      <div class="promo-art">
+        <svg class="icon icon-gift"><use href="#i-gift"/></svg>
       </div>
-    </section>
+    </div>
 
-    <!-- ============= SERVICE DETAIL ============= -->
-    <section class="screen screen--detail" data-screen="detail">
-      <header class="top-bar">
-        <button class="icon-btn back-btn" data-go="services" aria-label="Назад">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m15 18-6-6 6-6"/></svg>
-        </button>
-        <div class="search-pill">
-          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-          <input type="text" placeholder="Поиск..." aria-label="Поиск" />
-        </div>
-        <div class="header-logo header-logo--red">
-          <svg viewBox="0 0 32 32" aria-hidden="true">
-            <path d="M16 3 3 14v15h26V14L16 3z" fill="#E63946"/>
-            <path d="M11 18l4-4 2 2-4 4z" fill="#fff"/>
-            <path d="M17 16l4-4 2 2-4 4z" fill="#fff"/>
-          </svg>
-        </div>
-      </header>
+    <h2 class="section-title">Категории</h2>
+    <div class="cat-grid">
+      <button class="cat-card" data-go="services" data-cat="electric">
+        <span class="cat-icon-wrap cat-icon-wrap--yellow">
+          <svg class="icon icon-lg"><use href="#i-bolt"/></svg>
+        </span>
+        <span class="cat-label">Электрик</span>
+        <span class="cat-sub">12 мастеров</span>
+      </button>
+      <button class="cat-card" data-go="services" data-cat="cleaning">
+        <span class="cat-icon-wrap cat-icon-wrap--blue">
+          <svg class="icon icon-lg"><use href="#i-spray"/></svg>
+        </span>
+        <span class="cat-label">Клининг</span>
+        <span class="cat-sub">8 сервисов</span>
+      </button>
+    </div>
 
-      <div class="hero">
-        <div class="hero-img" id="detail-hero"></div>
-        <button class="fav-btn" id="detail-fav" aria-label="В избранное">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
-        </button>
+    <div class="section-head">
+      <h2 class="section-title">Популярные</h2>
+      <button class="link-btn" data-go="services" data-cat="cleaning">Все ›</button>
+    </div>
+    <div class="featured-rail" id="featured-rail"><!-- injected --></div>
+
+    <div class="quick-row">
+      <button class="quick-card" data-action="support">
+        <span class="quick-ico"><svg class="icon"><use href="#i-help"/></svg></span>
+        <span>Поддержка</span>
+      </button>
+      <button class="quick-card" data-go="register">
+        <span class="quick-ico"><svg class="icon"><use href="#i-plus"/></svg></span>
+        <span>Стать мастером</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============= SERVICES LIST ============= -->
+  <section class="screen screen--services" data-screen="services">
+    <header class="top-bar top-bar--gradient">
+      <button class="icon-btn icon-btn--glass" data-go="home" aria-label="Назад"><svg class="icon"><use href="#i-back"/></svg></button>
+      <h1 class="top-title" id="services-title">Клининг</h1>
+      <button class="icon-btn icon-btn--glass" aria-label="Поиск"><svg class="icon"><use href="#i-search"/></svg></button>
+    </header>
+
+    <div class="filter-chips" id="filter-chips">
+      <button class="chip is-active" data-filter="all">Все</button>
+      <button class="chip" data-filter="top">⭐ Топ</button>
+      <button class="chip" data-filter="nearby">Рядом</button>
+      <button class="chip" data-filter="cheap">Дешевле</button>
+      <button class="chip" data-filter="online">Онлайн</button>
+    </div>
+
+    <div class="services-grid" id="services-grid"><!-- injected --></div>
+
+    <div class="bottom-cta bottom-cta--floating">
+      <button class="btn btn--primary" data-go="register">
+        <svg class="icon icon-sm"><use href="#i-plus"/></svg>
+        Предложить мастера
+      </button>
+    </div>
+  </section>
+
+  <!-- ============= SERVICE DETAIL ============= -->
+  <section class="screen screen--detail" data-screen="detail">
+    <header class="top-bar top-bar--floating">
+      <button class="icon-btn icon-btn--glass" data-go="services" aria-label="Назад"><svg class="icon"><use href="#i-back"/></svg></button>
+      <div class="top-bar-right">
+        <button class="icon-btn icon-btn--glass" aria-label="Поделиться"><svg class="icon"><use href="#i-share"/></svg></button>
+        <button class="icon-btn icon-btn--glass" id="detail-fav" aria-label="В избранное"><svg class="icon"><use href="#i-heart"/></svg></button>
       </div>
+    </header>
 
-      <article class="info-card">
+    <div class="hero" id="detail-hero">
+      <div class="hero-emoji" id="detail-hero-emoji"></div>
+      <div class="hero-dots">
+        <span class="dot is-on"></span><span class="dot"></span><span class="dot"></span>
+      </div>
+    </div>
+
+    <article class="info-card">
+      <div class="info-head">
         <h2 id="detail-name">Master Clean</h2>
-        <p id="detail-desc">Профессиональный клининг сервис с опытом 5+ лет. Качественная уборка квартир, домов и офисов. Гарантия чистоты и скорости!</p>
-        <ul class="features">
-          <li><span class="check">✓</span> Опытные сотрудники</li>
-          <li><span class="check">✓</span> Современное оборудование</li>
-          <li><span class="check">✓</span> Гарантия качества</li>
-        </ul>
-      </article>
-
-      <h3 class="section-h">Выберите услуги</h3>
-      <div class="service-list" id="service-list">
-        <!-- service options injected by JS -->
+        <span class="verified" title="Проверенный сервис"><svg class="icon icon-xs"><use href="#i-shield"/></svg> Проверен</span>
       </div>
+
+      <div class="stats-row">
+        <div class="stat"><svg class="icon icon-xs star"><use href="#i-star"/></svg><strong>4.9</strong><span>(127)</span></div>
+        <div class="stat"><svg class="icon icon-xs"><use href="#i-bag"/></svg><strong>340+</strong><span>заказов</span></div>
+        <div class="stat"><svg class="icon icon-xs"><use href="#i-clock"/></svg><strong>~15</strong><span>мин</span></div>
+      </div>
+
+      <p id="detail-desc">Профессиональный клининг сервис с опытом 5+ лет. Качественная уборка квартир, домов и офисов. Гарантия чистоты и скорости!</p>
+
+      <ul class="features">
+        <li><span class="check"><svg class="icon icon-xs"><use href="#i-check"/></svg></span> Опытные сотрудники</li>
+        <li><span class="check"><svg class="icon icon-xs"><use href="#i-check"/></svg></span> Современное оборудование</li>
+        <li><span class="check"><svg class="icon icon-xs"><use href="#i-check"/></svg></span> Гарантия качества</li>
+        <li><span class="check"><svg class="icon icon-xs"><use href="#i-check"/></svg></span> Эко-средства</li>
+      </ul>
+    </article>
+
+    <div class="tabs">
+      <button class="tab is-active" data-tab="services">Услуги</button>
+      <button class="tab" data-tab="reviews">Отзывы</button>
+      <button class="tab" data-tab="info">Инфо</button>
+    </div>
+
+    <div class="tab-pane is-active" data-pane="services">
+      <h3 class="section-h">Выберите услуги</h3>
+      <div class="service-list" id="service-list"></div>
 
       <h3 class="section-h">Выберите время</h3>
-      <div class="time-table" id="time-table">
-        <!-- time rows injected by JS -->
-      </div>
+      <div class="time-table" id="time-table"></div>
+    </div>
 
-      <div class="bottom-cta">
-        <button class="btn btn--primary" data-go="order" id="to-order-btn">
-          Оформить заявку <span class="chev-w">›</span>
-        </button>
-      </div>
-    </section>
-
-    <!-- ============= ORDER CHECKOUT ============= -->
-    <section class="screen screen--order" data-screen="order">
-      <header class="top-bar">
-        <button class="icon-btn back-btn" data-go="detail" aria-label="Назад">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m15 18-6-6 6-6"/></svg>
-        </button>
-        <h1 class="top-title">Оформление заявки</h1>
-        <div class="header-logo header-logo--red">
-          <svg viewBox="0 0 32 32" aria-hidden="true">
-            <path d="M16 3 3 14v15h26V14L16 3z" fill="#E63946"/>
-            <path d="M11 18l4-4 2 2-4 4z" fill="#fff"/>
-            <path d="M17 16l4-4 2 2-4 4z" fill="#fff"/>
-          </svg>
+    <div class="tab-pane" data-pane="reviews">
+      <div class="rating-summary">
+        <div class="rating-big">
+          <div class="big-num">4.9</div>
+          <div class="big-stars">
+            <svg class="icon star"><use href="#i-star"/></svg>
+            <svg class="icon star"><use href="#i-star"/></svg>
+            <svg class="icon star"><use href="#i-star"/></svg>
+            <svg class="icon star"><use href="#i-star"/></svg>
+            <svg class="icon star"><use href="#i-star"/></svg>
+          </div>
+          <div class="big-count">127 отзывов</div>
         </div>
-      </header>
-
-      <article class="card order-card">
-        <h2>Ваш заказ:</h2>
-        <ul class="order-items" id="order-items"></ul>
-        <div class="divider"></div>
-        <div class="total-row">
-          <span class="total-label">Итого:</span>
-          <span class="total-value">
-            <span class="total-icon">🧮</span>
-            <strong id="order-total">0</strong> <span class="cur">сум</span>
-          </span>
+        <div class="rating-bars">
+          <div class="rb"><span>5</span><div class="bar"><i style="width:88%"></i></div><span>112</span></div>
+          <div class="rb"><span>4</span><div class="bar"><i style="width:8%"></i></div><span>10</span></div>
+          <div class="rb"><span>3</span><div class="bar"><i style="width:3%"></i></div><span>4</span></div>
+          <div class="rb"><span>2</span><div class="bar"><i style="width:1%"></i></div><span>1</span></div>
+          <div class="rb"><span>1</span><div class="bar"><i style="width:0%"></i></div><span>0</span></div>
         </div>
-      </article>
-
-      <p class="start-time">Начало уборки: <span id="order-time">Пн 9:00</span></p>
-
-      <article class="card form-card">
-        <label class="field">
-          <span class="field-label"><span class="field-icon">📞</span> Номер:</span>
-          <input id="phone" type="tel" placeholder="+998 90 000 00 00" value="+998 90 212 05 36" />
-        </label>
-        <div class="hr"></div>
-        <label class="field">
-          <span class="field-label"><span class="field-icon">📍</span> Адрес:</span>
-          <input id="address" type="text" placeholder="Улица, дом, квартира" value="Гагарина 99, квартира 8" />
-        </label>
-      </article>
-
-      <div class="bottom-cta">
-        <button class="btn btn--primary" id="pay-btn">
-          Оплатить заявку <span class="chev-w">›</span>
-        </button>
       </div>
-    </section>
+      <div class="reviews-list" id="reviews-list"></div>
+    </div>
 
-    <!-- ============= REGISTER MASTER ============= -->
-    <section class="screen screen--register" data-screen="register">
-      <header class="top-bar">
-        <button class="icon-btn back-btn" data-go="home" aria-label="Назад">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m15 18-6-6 6-6"/></svg>
-        </button>
-        <h1 class="top-title">Регистрация мастера</h1>
-        <div class="header-logo header-logo--red">
-          <svg viewBox="0 0 32 32" aria-hidden="true">
-            <path d="M16 3 3 14v15h26V14L16 3z" fill="#E63946"/>
-            <path d="M11 18l4-4 2 2-4 4z" fill="#fff"/>
-            <path d="M17 16l4-4 2 2-4 4z" fill="#fff"/>
-          </svg>
+    <div class="tab-pane" data-pane="info">
+      <div class="info-list">
+        <div class="info-row">
+          <span class="info-ico"><svg class="icon icon-sm"><use href="#i-pin"/></svg></span>
+          <div><div class="info-key">Адрес</div><div class="info-val">Ташкент, Чиланзар 17</div></div>
         </div>
-      </header>
+        <div class="info-row">
+          <span class="info-ico"><svg class="icon icon-sm"><use href="#i-clock"/></svg></span>
+          <div><div class="info-key">Часы работы</div><div class="info-val">Пн–Сб 08:00–22:00 · Вс 10:00–18:00</div></div>
+        </div>
+        <div class="info-row">
+          <span class="info-ico"><svg class="icon icon-sm"><use href="#i-phone"/></svg></span>
+          <div><div class="info-key">Контакты</div><div class="info-val">+998 71 200 00 00</div></div>
+        </div>
+      </div>
+    </div>
 
+    <div class="bottom-cta bottom-cta--floating">
+      <div class="cta-summary">
+        <span class="cta-summary-label">Итого</span>
+        <span class="cta-summary-val"><strong id="cta-total">0</strong> сум</span>
+      </div>
+      <button class="btn btn--primary btn--small" data-go="order" id="to-order-btn">
+        Далее <svg class="icon icon-sm"><use href="#i-chev"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============= ORDER ============= -->
+  <section class="screen screen--order" data-screen="order">
+    <header class="top-bar">
+      <button class="icon-btn" data-go="detail" aria-label="Назад"><svg class="icon"><use href="#i-back"/></svg></button>
+      <h1 class="top-title">Оформление заявки</h1>
+      <span class="step-pill">Шаг 2 из 3</span>
+    </header>
+
+    <article class="card order-card">
+      <h2>Ваш заказ</h2>
+      <ul class="order-items" id="order-items"></ul>
+      <div class="meta-row">
+        <span class="meta-key"><svg class="icon icon-xs"><use href="#i-clock"/></svg> Начало</span>
+        <span class="meta-val" id="order-time">Пн 9:00</span>
+      </div>
+    </article>
+
+    <h3 class="section-h">Способ оплаты</h3>
+    <div class="pay-grid" id="pay-grid">
+      <button class="pay-card is-active" data-pay="click">
+        <span class="pay-logo pay-logo--click">Click</span>
+        <span class="pay-name">Click</span>
+      </button>
+      <button class="pay-card" data-pay="payme">
+        <span class="pay-logo pay-logo--payme">Payme</span>
+        <span class="pay-name">Payme</span>
+      </button>
+      <button class="pay-card" data-pay="card">
+        <svg class="icon icon-pay"><use href="#i-card"/></svg>
+        <span class="pay-name">Карта</span>
+      </button>
+      <button class="pay-card" data-pay="cash">
+        <svg class="icon icon-pay"><use href="#i-cash"/></svg>
+        <span class="pay-name">Наличные</span>
+      </button>
+    </div>
+
+    <h3 class="section-h">Контактные данные</h3>
+    <div class="card form-card">
+      <label class="field">
+        <span class="field-label"><svg class="icon icon-xs"><use href="#i-phone"/></svg> Номер телефона</span>
+        <input id="phone" type="tel" placeholder="+998 90 000 00 00" value="+998 90 212 05 36" />
+      </label>
+      <div class="hr"></div>
+      <label class="field">
+        <span class="field-label"><svg class="icon icon-xs"><use href="#i-pin"/></svg> Адрес</span>
+        <input id="address" type="text" placeholder="Улица, дом, квартира" value="Гагарина 99, кв. 8" />
+      </label>
+      <div class="hr"></div>
+      <label class="field">
+        <span class="field-label"><svg class="icon icon-xs"><use href="#i-edit"/></svg> Комментарий</span>
+        <input id="comment" type="text" placeholder="Например: код домофона 123" />
+      </label>
+    </div>
+
+    <h3 class="section-h">Промокод</h3>
+    <div class="promo-input">
+      <input id="promo" type="text" placeholder="Введите код" />
+      <button class="btn btn--ghost" id="apply-promo">Применить</button>
+    </div>
+
+    <article class="card breakdown">
+      <div class="bd-row"><span>Услуги</span><span id="bd-services">0 сум</span></div>
+      <div class="bd-row"><span>Сервисный сбор</span><span id="bd-fee">15 000 сум</span></div>
+      <div class="bd-row bd-discount" id="bd-discount-row" hidden><span>Скидка</span><span id="bd-discount">−0 сум</span></div>
+      <div class="hr"></div>
+      <div class="bd-row bd-total"><span>Итого</span><span><strong id="order-total">0</strong> сум</span></div>
+    </article>
+
+    <div class="bottom-cta">
+      <button class="btn btn--primary" id="pay-btn">
+        Оплатить заявку <svg class="icon icon-sm"><use href="#i-chev"/></svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============= REGISTER MASTER ============= -->
+  <section class="screen screen--register" data-screen="register">
+    <header class="top-bar">
+      <button class="icon-btn" data-go="home" aria-label="Назад"><svg class="icon"><use href="#i-back"/></svg></button>
+      <h1 class="top-title">Регистрация мастера</h1>
+      <span class="step-pill" id="reg-step-pill">1/2</span>
+    </header>
+
+    <div class="progress">
+      <i class="progress-bar" id="reg-progress" style="width:50%"></i>
+    </div>
+
+    <!-- STEP 1 -->
+    <div class="reg-step is-active" data-step="1">
       <h2 class="reg-q">Какие виды услуг вы предоставляете?</h2>
-
-      <div class="reg-cats" id="reg-cats">
-        <button class="reg-cat" data-cat="electric"><span class="reg-emoji">⚡</span><span>Электрик</span></button>
-        <button class="reg-cat" data-cat="plumber"><span class="reg-emoji">🔧</span><span>Сантехник</span></button>
-        <button class="reg-cat" data-cat="carpenter"><span class="reg-emoji">🔨</span><span>Плотник</span></button>
-        <button class="reg-cat" data-cat="cleaning"><span class="reg-emoji">🧽</span><span>Клининг</span></button>
+      <p class="reg-hint">Можно выбрать несколько</p>
+      <div class="reg-cats">
+        <button class="reg-cat" data-cat="electric">
+          <span class="reg-ico-wrap reg-ico-wrap--yellow"><svg class="icon icon-lg"><use href="#i-bolt"/></svg></span>
+          <span>Электрик</span>
+        </button>
+        <button class="reg-cat" data-cat="cleaning">
+          <span class="reg-ico-wrap reg-ico-wrap--blue"><svg class="icon icon-lg"><use href="#i-spray"/></svg></span>
+          <span>Клининг</span>
+        </button>
       </div>
+      <div class="bottom-cta">
+        <button class="btn btn--primary" id="reg-next">
+          Далее <svg class="icon icon-sm"><use href="#i-chev"/></svg>
+        </button>
+      </div>
+    </div>
 
+    <!-- STEP 2 -->
+    <div class="reg-step" data-step="2">
+      <h2 class="reg-q">Расскажите о себе</h2>
       <div class="reg-form">
         <label class="input-pill">
-          <span class="input-ico">👤</span>
-          <input type="text" placeholder="Ваше имя" />
+          <span class="input-ico"><svg class="icon icon-sm"><use href="#i-user"/></svg></span>
+          <input type="text" id="reg-name" placeholder="Ваше имя" />
         </label>
         <label class="input-pill">
-          <span class="input-ico">📞</span>
-          <input type="tel" placeholder="Ваш номер телефона" />
+          <span class="input-ico"><svg class="icon icon-sm"><use href="#i-phone"/></svg></span>
+          <input type="tel" id="reg-phone" placeholder="Ваш номер телефона" />
         </label>
         <label class="input-pill input-pill--select">
-          <span class="input-ico">📍</span>
-          <select>
+          <span class="input-ico"><svg class="icon icon-sm"><use href="#i-pin"/></svg></span>
+          <select id="reg-city">
             <option value="">Ваш город</option>
             <option>Ташкент</option>
             <option>Самарканд</option>
@@ -260,20 +394,140 @@
             <option>Фергана</option>
             <option>Наманган</option>
           </select>
-          <span class="chev-s">›</span>
+          <svg class="icon icon-sm chev-s"><use href="#i-chev"/></svg>
+        </label>
+        <label class="input-pill">
+          <span class="input-ico"><svg class="icon icon-sm"><use href="#i-edit"/></svg></span>
+          <input type="text" id="reg-exp" placeholder="Опыт работы (например: 3 года)" />
+        </label>
+        <label class="check-row">
+          <input type="checkbox" id="reg-tos" checked />
+          <span>Я согласен с <a href="#" onclick="return false">условиями сервиса</a></span>
         </label>
       </div>
+      <div class="bottom-cta bottom-cta--row">
+        <button class="btn btn--ghost" id="reg-back">Назад</button>
+        <button class="btn btn--primary" id="submit-reg">Отправить заявку</button>
+      </div>
+      <p class="reg-note">Скоро мы с вами свяжемся, чтобы помочь вам вступить в наш сервис.</p>
+    </div>
+  </section>
 
-      <button class="btn btn--primary btn--wide" id="submit-reg">Оставить заявку</button>
+  <!-- ============= FAVORITES ============= -->
+  <section class="screen screen--favs" data-screen="favorites">
+    <header class="top-bar top-bar--gradient">
+      <button class="icon-btn icon-btn--glass" data-go="home" aria-label="Назад"><svg class="icon"><use href="#i-back"/></svg></button>
+      <h1 class="top-title">Избранное</h1>
+      <span style="width:38px"></span>
+    </header>
+    <div class="services-grid" id="favs-grid"></div>
+    <div class="empty" id="favs-empty" hidden>
+      <div class="empty-art"><svg class="icon icon-xxl"><use href="#i-heart"/></svg></div>
+      <h3>Пока пусто</h3>
+      <p>Добавляйте сервисы в избранное — они появятся здесь</p>
+      <button class="btn btn--primary btn--narrow" data-go="home">К сервисам</button>
+    </div>
+  </section>
 
-      <p class="reg-note">Скоро мы с вами свяжемся чтобы помочь вам вступить в наш сервис, спасибо за вашу заявку.</p>
-    </section>
+  <!-- ============= ORDERS ============= -->
+  <section class="screen screen--orders" data-screen="orders">
+    <header class="top-bar">
+      <button class="icon-btn" data-go="home" aria-label="Назад"><svg class="icon"><use href="#i-back"/></svg></button>
+      <h1 class="top-title">Мои заказы</h1>
+      <span style="width:38px"></span>
+    </header>
+    <div class="orders-tabs">
+      <button class="o-tab is-active" data-otab="active">Активные</button>
+      <button class="o-tab" data-otab="done">Завершённые</button>
+    </div>
+    <div class="orders-list" id="orders-list"></div>
+    <div class="empty" id="orders-empty" hidden>
+      <div class="empty-art"><svg class="icon icon-xxl"><use href="#i-bag"/></svg></div>
+      <h3>Заказов пока нет</h3>
+      <p>Закажите услугу — она появится здесь</p>
+      <button class="btn btn--primary btn--narrow" data-go="home">К сервисам</button>
+    </div>
+  </section>
 
-  </div>
+  <!-- ============= PROFILE ============= -->
+  <section class="screen screen--profile" data-screen="profile">
+    <header class="top-bar">
+      <button class="icon-btn" data-go="home" aria-label="Назад"><svg class="icon"><use href="#i-back"/></svg></button>
+      <h1 class="top-title">Профиль</h1>
+      <button class="icon-btn" aria-label="Редактировать"><svg class="icon"><use href="#i-edit"/></svg></button>
+    </header>
 
-  <!-- Toast -->
-  <div class="toast" id="toast"></div>
+    <div class="profile-card">
+      <div class="profile-avatar">А</div>
+      <div class="profile-name">Анвар Каримов</div>
+      <div class="profile-phone">+998 90 212 05 36</div>
+      <div class="profile-stats">
+        <div><strong>12</strong><span>Заказов</span></div>
+        <div><strong id="profile-fav-count">0</strong><span>Избранных</span></div>
+        <div><strong>4.8</strong><span>Рейтинг</span></div>
+      </div>
+    </div>
 
-  <script src="app.js"></script>
+    <div class="menu-list">
+      <button class="menu-row" data-go="orders">
+        <span class="menu-ico"><svg class="icon"><use href="#i-bag"/></svg></span>
+        <span>Мои заказы</span>
+        <svg class="icon icon-sm chev-s"><use href="#i-chev"/></svg>
+      </button>
+      <button class="menu-row" data-go="favorites">
+        <span class="menu-ico"><svg class="icon"><use href="#i-heart"/></svg></span>
+        <span>Избранное</span>
+        <svg class="icon icon-sm chev-s"><use href="#i-chev"/></svg>
+      </button>
+      <button class="menu-row" id="theme-toggle">
+        <span class="menu-ico"><svg class="icon" id="theme-ico"><use href="#i-moon"/></svg></span>
+        <span>Тема</span>
+        <span class="menu-aside" id="theme-label">Светлая</span>
+      </button>
+      <button class="menu-row">
+        <span class="menu-ico"><svg class="icon"><use href="#i-shield"/></svg></span>
+        <span>Безопасность</span>
+        <svg class="icon icon-sm chev-s"><use href="#i-chev"/></svg>
+      </button>
+      <button class="menu-row">
+        <span class="menu-ico"><svg class="icon"><use href="#i-help"/></svg></span>
+        <span>Поддержка</span>
+        <svg class="icon icon-sm chev-s"><use href="#i-chev"/></svg>
+      </button>
+      <button class="menu-row menu-row--danger">
+        <span class="menu-ico"><svg class="icon"><use href="#i-logout"/></svg></span>
+        <span>Выйти</span>
+      </button>
+    </div>
+
+    <p class="version">UstaGo v1.0 · made with ❤️ in Tashkent</p>
+  </section>
+
+  <!-- ============= BOTTOM NAV ============= -->
+  <nav class="bottom-nav" id="bottom-nav">
+    <button class="nav-tab is-active" data-go="home">
+      <svg class="icon"><use href="#i-home"/></svg>
+      <span>Главная</span>
+    </button>
+    <button class="nav-tab" data-go="favorites">
+      <svg class="icon"><use href="#i-heart"/></svg>
+      <span>Избранное</span>
+    </button>
+    <button class="nav-tab" data-go="orders">
+      <svg class="icon"><use href="#i-bag"/></svg>
+      <span>Заказы</span>
+    </button>
+    <button class="nav-tab" data-go="profile">
+      <svg class="icon"><use href="#i-user"/></svg>
+      <span>Профиль</span>
+    </button>
+  </nav>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
 </body>
 </html>
